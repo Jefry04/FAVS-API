@@ -51,7 +51,7 @@ module.exports = {
         return;
       }
 
-      res.status(200).json({ message: "List found", list });
+      res.status(200).json(list);
     } catch (error) {
       res.status(400).json(error);
     }
@@ -74,11 +74,10 @@ module.exports = {
         return;
       }
 
-      list.fav = [...list.fav, ...fav]
+      list.fav = [...list.fav, ...fav];
       await list.save({ validateBeforeSave: false });
 
-
-      res.status(200).json({ message: "List updated", list });
+      res.status(200).json(list);
     } catch (error) {
       res.status(400).json(error);
     }
@@ -102,7 +101,7 @@ module.exports = {
 
       await List.deleteOne({ _id: listId });
 
-      res.status(200).json({ message: "List deleted", list });
+      res.status(200).json(list);
     } catch (error) {
       res.status(400).json(error);
     }
