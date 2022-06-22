@@ -4,7 +4,7 @@
   "description": "company favs",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env MONGO_URI=mongodb://localhost:27017/favs-test jest --detectOpenHandles",
+    "test": "cross-env MONGO_URI=mongodb://localhost:27017/favs-test jest",
     "test:coverage": "npm test -- --coverage",
     "dev": "nodemon api"
   },
