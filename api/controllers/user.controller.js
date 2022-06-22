@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   async signup (req, res){
+    const passwordRegex = new RegExp(
+      "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$"
+    );
     try{
       const { password, confirmPassword, email } = req.body;
       
@@ -11,6 +14,12 @@ module.exports = {
         res.status(403).json({ message: 'Contraseñas no coinciden' });
         return;
       }
+      const validatePassword = passwordRegex.test(password);
+      if(!validatePassword){
+        res.status(403).json({ message: 'Contraseñas no es suficiemente fuerte'});
+        return;
+      }
+
       const encPassword = await bcrypt.hash(password, 8);
       
       const user = await User.create ({
@@ -22,7 +31,7 @@ module.exports = {
         expiresIn: 60 * 60 * 24,
       });
 
-      res.status(201).json({ token, message: "User created" });
+      res.status(200).json({ token, message: "User created" });
     }catch (error){
         res.status(400).json({ message: error.message });
     }
@@ -47,7 +56,7 @@ module.exports = {
         { id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: 60 * 60 * 24 }
       );
       
-      res.status(201).json({ token, message: "User login successfully" });
+      res.status(200).json({ token, message: "User login successfully" });
     }catch (err) {
       res.status(400).json({ message: err.message });
     }
